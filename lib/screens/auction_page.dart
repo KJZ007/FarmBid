@@ -6,6 +6,8 @@ import 'bid_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'auction_detail_page.dart';
 import '../widgets/auction_card.dart';
+import '../tutorial/auction_page_tutorial.dart';
+import '../tutorial/tutorial_overlay.dart';
 
 class AuctionPage extends StatefulWidget {
   @override
@@ -25,6 +27,25 @@ class _AuctionPageState extends State<AuctionPage> with SingleTickerProviderStat
     'Dairy',
     'Others',
   ];
+  final List<GlobalKey> _tutorialKeys = [
+    GlobalKey(), // Available Auctions tab
+    GlobalKey(), // My Auctions tab
+    GlobalKey(), // Search and filter section
+    GlobalKey(), // Add new auction button
+  ];
+
+  void _startTutorial() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => TutorialOverlay(
+        steps: AuctionPageTutorial.getSteps(context, _tutorialKeys),
+        onComplete: () {
+          Navigator.of(context).pop();
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +62,13 @@ class _AuctionPageState extends State<AuctionPage> with SingleTickerProviderStat
             indicatorWeight: 3,
             tabs: [
               Tab(
-                icon: Icon(Icons.gavel),
-                text: 'Available Auctions',
+                child: Container(
+                  key: _tutorialKeys[0],
+                  child: Icon(Icons.gavel),
+                ),
               ),
               Tab(
+                key: _tutorialKeys[1],
                 icon: Icon(Icons.inventory),
                 text: 'My Auctions',
               ),
@@ -52,11 +76,17 @@ class _AuctionPageState extends State<AuctionPage> with SingleTickerProviderStat
           ),
           actions: [
             IconButton(
+              key: _tutorialKeys[3],
               icon: Icon(Icons.add_circle_outline),
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => AddProductPage()),
               ),
+            ),
+            IconButton(
+              icon: Icon(Icons.help_outline),
+              tooltip: 'Start Tutorial',
+              onPressed: _startTutorial,
             ),
           ],
         ),
@@ -125,6 +155,7 @@ class _AuctionPageState extends State<AuctionPage> with SingleTickerProviderStat
 
   Widget _buildSearchAndFilter() {
     return Padding(
+      key: _tutorialKeys[2],
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
