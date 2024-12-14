@@ -72,10 +72,7 @@ packages:
       sha256: ee67cb0715911d28db6bf4af1026078bd6f0128b07a5f66fb2ed94ec6783c09a
       url: "https://pub.dev"
     source: hosted
-<<<<<<< HEAD
     version: "1.18.0"
-=======
-    version: "1.19.0"
   cross_file:
     dependency: transitive
     description:
@@ -84,7 +81,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.4+2"
->>>>>>> f0685cb0c9e704258359a2a1a1e305bc250a61d3
   crypto:
     dependency: transitive
     description:
